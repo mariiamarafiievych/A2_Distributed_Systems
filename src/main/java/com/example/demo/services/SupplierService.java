@@ -39,7 +39,6 @@ public class SupplierService {
 
             if(existsStorageItem == null){
                 Storage storageItem = new Storage();
-                //storageItem.setId(UUID.randomUUID());
                 storageItem.setItem(itemTemp);
                 storageItem.setQuantity(itemQTemp);
                 storageRepository.save(storageItem);
