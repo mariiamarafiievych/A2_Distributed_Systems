@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.Order;
 import com.example.demo.entities.Supplier;
 import com.example.demo.entities.Item;
 import com.example.demo.entities.dto.SupplyDTO;
@@ -7,14 +8,13 @@ import com.example.demo.services.SupplierService;
 import com.example.demo.services.ItemService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("suply")
@@ -28,7 +28,7 @@ public class SupplierController {
         this.itemService = itemService;
     }
 
-    @PostMapping("suplyItems")
+    @PostMapping
     public ResponseEntity<Void> getItemsFromSupplier(@RequestBody String supplyJson){
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         SupplyDTO supply = gson.fromJson(supplyJson, SupplyDTO.class);
@@ -49,5 +49,15 @@ public class SupplierController {
         supplierService.addItemsToStorage(supplier, toStorage, itemQuantities);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Supplier> showById(@PathVariable UUID id) throws NotFoundException {
+        return ResponseEntity.ok(supplierService.getSupplierById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Supplier>> show(){
+        return ResponseEntity.ok(supplierService.getSupplier());
     }
 }

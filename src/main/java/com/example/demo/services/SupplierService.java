@@ -5,12 +5,15 @@ import com.example.demo.entities.Storage;
 import com.example.demo.entities.Item;
 import com.example.demo.repo.SupplierRepository;
 import com.example.demo.repo.StorageRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SupplierService {
@@ -21,6 +24,11 @@ public class SupplierService {
     public SupplierService(SupplierRepository supplierRepository, StorageRepository storageRepository){
         this.supplierRepository = supplierRepository;
         this.storageRepository = storageRepository;
+    }
+
+    @Transactional
+    public List<Supplier> getSupplier(){
+        return supplierRepository.findAll();
     }
 
     @Transactional
@@ -55,5 +63,19 @@ public class SupplierService {
     @Transactional
     public void addSupplier(Supplier supplier){
         supplierRepository.save(supplier);
+    }
+
+    @Transactional
+    public Supplier getSupplierById( UUID id) throws NotFoundException {
+        Optional<Supplier> client = supplierRepository.findById(id);
+        if (client.isPresent())
+            return client.get();
+        else
+            throw new NotFoundException(String.format("Courier with %s was not found",id));
+    }
+
+    @Transactional
+    public void deleteSupplierById(UUID id) throws NotFoundException {
+        supplierRepository.delete(getSupplierById(id));
     }
 }

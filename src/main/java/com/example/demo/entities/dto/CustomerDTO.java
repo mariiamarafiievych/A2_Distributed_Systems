@@ -1,25 +1,29 @@
 package com.example.demo.entities.dto;
 
 import com.example.demo.entities.Customer;
+import com.sun.istack.NotNull;
 
 import java.util.List;
 
 public class CustomerDTO {
+    private String firstName;
+    private String lastName;
 
-    private List<Customer> customers;
-
-    public List<Customer> getCustomers() {
-        return customers;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    @Override
-    public String toString() {
-        return "CustomerDTO{" +
-                "customers=" + customers +
-                '}';
+    public String getFirstName() {
+        return firstName;
     }
+
+    public void setName(String firstName) {
+        this.firstName = firstName;
+    }
+
+
 }
